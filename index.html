@@ -1,0 +1,216 @@
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bag Tag Builder – Classroom Safe</title>
+
+<style>
+:root{
+  --blue:#5b8cff;
+  --bg:#f4f7ff;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family: "Comic Neue", system-ui, -apple-system, BlinkMacSystemFont;
+  background: linear-gradient(135deg,#f7faff,#eef3ff);
+}
+
+.app{
+  max-width:1400px;
+  margin:20px auto;
+  display:flex;
+  gap:24px;
+  padding:0 20px;
+}
+
+.panel{
+  background:#fff;
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 14px 32px rgba(0,0,0,0.12);
+}
+
+.left{
+  width:380px;
+}
+
+.right{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+h2,h3{
+  margin-top:0;
+}
+
+input{
+  width:100%;
+  padding:14px;
+  margin-bottom:14px;
+  font-size:18px;
+  border-radius:14px;
+  border:2px solid #ddd;
+}
+
+input:focus{
+  outline:none;
+  border-color:var(--blue);
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border-radius:16px;
+  border:none;
+  font-size:17px;
+  background:var(--blue);
+  color:white;
+  cursor:pointer;
+  margin-bottom:18px;
+}
+
+.preview-wrap{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+}
+
+.tag{
+  width:420px;
+  height:200px;
+  background:linear-gradient(145deg,#ffdd6e,#ffb703);
+  border-radius:32px;
+  position:relative;
+  box-shadow:0 24px 44px rgba(0,0,0,0.25);
+}
+
+.safe{
+  position:absolute;
+  inset:28px;
+  border:3px dashed rgba(0,0,0,0.35);
+  border-radius:24px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:18px 34px;
+  text-align:center;
+}
+
+.name{
+  font-size:36px;
+  font-weight:700;
+  line-height:1.15;
+  word-break:break-word;
+}
+
+.extra{
+  font-size:22px;
+  margin-top:8px;
+  line-height:1.2;
+}
+
+.checklist label{
+  display:block;
+  margin-bottom:8px;
+  font-size:15px;
+}
+
+.footer-note{
+  font-size:13px;
+  opacity:0.7;
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- LEFT PANEL -->
+  <div class="panel left">
+    <h2>Student details</h2>
+
+    <input id="name" placeholder="Student name">
+    <input id="extra" placeholder="Optional extra line">
+
+    <button onclick="addTag()">Add to class list</button>
+
+    <h3>Print checklist</h3>
+    <div class="checklist">
+      <label><input type="checkbox"> Names added</label>
+      <label><input type="checkbox"> SCAD exported</label>
+      <label><input type="checkbox"> STL rendered</label>
+      <label><input type="checkbox"> Sliced</label>
+      <label><input type="checkbox"> Printed</label>
+    </div>
+
+    <div class="footer-note">
+      Classroom safe • Name always on top • Print-first layout
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="panel right">
+    <h2>Live preview</h2>
+
+    <div class="preview-wrap">
+      <div class="tag">
+        <div class="safe">
+          <div class="name" id="pname">Name</div>
+          <div class="extra" id="pextra"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const nameInput = document.getElementById("name");
+const extraInput = document.getElementById("extra");
+const pname = document.getElementById("pname");
+const pextra = document.getElementById("pextra");
+
+function fitText(){
+  let size = 36;
+  pname.style.fontSize = size + "px";
+
+  while (
+    (pname.scrollWidth > pname.parentElement.clientWidth ||
+     pname.scrollHeight > pname.parentElement.clientHeight * 0.6)
+    && size > 24
+  ){
+    size--;
+    pname.style.fontSize = size + "px";
+  }
+}
+
+nameInput.addEventListener("input",()=>{
+  pname.textContent = nameInput.value || "Name";
+  fitText();
+});
+
+extraInput.addEventListener("input",()=>{
+  pextra.textContent = extraInput.value;
+});
+
+function addTag(){
+  nameInput.value = "";
+  extraInput.value = "";
+  pname.textContent = "Name";
+  pextra.textContent = "";
+}
+</script>
+
+</body>
+</html>
